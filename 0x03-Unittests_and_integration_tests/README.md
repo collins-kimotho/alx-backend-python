@@ -38,8 +38,8 @@ At the end of this project, you are expected to be able to explain to anyone, wi
 * All your functions and coroutines must be type-annotated.
 
 # Required Files
-utils.py [(download)](https://intranet-projects-files.s3.amazonaws.com/webstack/utils.py)
-client.py [(download)](https://intranet-projects-files.s3.amazonaws.com/webstack/client.py)
-fixtures.py [(download)](https://intranet-projects-files.s3.amazonaws.com/webstack/fixtures.py)
+* utils.py [(download)](https://intranet-projects-files.s3.amazonaws.com/webstack/utils.py)
+* client.py [(download)](https://intranet-projects-files.s3.amazonaws.com/webstack/client.py)
+* fixtures.py [(download)](https://intranet-projects-files.s3.amazonaws.com/webstack/fixtures.py)
 
 ## Tasks
