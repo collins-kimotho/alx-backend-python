@@ -26,6 +26,18 @@ class TestGithubOrgClient(unittest.TestCase):
         # Assert: Check that get_json was called exactly once with the correct URL
         expected_url = f"https://api.github.com/orgs/{org_name}"
         mock_get_json.assert_called_once_with(expected_url)
+    
+    def test_has_license(self, repo, license_key, expected):
+        """Test that GithubOrgClient.has_license returns the correct value."""
+        # Arrange: Create a GithubOrgClient instance
+        client = GithubOrgClient("test_org")
+
+        # Act: Check if the client has the given license
+        result = client.has_license(repo, license_key)
+
+        # Assert: Verify the result is as expected
+        self.assertEqual(result, expected)
+
 
 
 # Run the tests if this script is executed directly
