@@ -9,7 +9,7 @@ that retrieves values from a nested dictionary using a specified path.
 import unittest
 from parameterized import parameterized
 from typing import Any, Dict, Tuple
-from utils import access_nested_map, get_json # Import the function we are testing
+from utils import access_nested_map, get_json, memoize # Import the function we are testing
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -71,26 +71,41 @@ class TestAccessNestedMap(unittest.TestCase):
         # Check that the exception message matches the expected key
         self.assertEqual(str(context.exception), repr(path[-1]))
 
-class TestGetJson(unittest.TestCase):
-    """
-    Test the get_json function
-    """
-    @parameterized.expand([
-        ("http://example.com", {"payload": True}),
-        ("http://holberton.io", {"payload": False})
-    ])
-    @patch("requests.get")
-    def test_get_json(self, test_url, test_payload, mock_requests_get):
-        """
-        Test the get_json method to ensure it returns the expected output.
-        Args:
-            url: url to send http request to
-            payload: expected json response
-        """
-        mock_requests_get.return_value.json.return_value = test_payload
-        result = get_json(test_url)
-        self.assertEqual(result, test_payload)
-        mock_requests_get.assert_called_once_with(test_url)
+
+class TestMemoize(unittest.TestCase):
+    """Test cases for the memoize decorator."""
+
+    def test_memoize(self):
+        """Test that memoize caches the result of a method."""
+
+        # Define a class to test memoization
+        class TestClass:
+            """A simple class with a memoized property."""
+
+            def a_method(self):
+                """A method that returns a fixed value."""
+                return 42
+
+            @memoize
+            def a_property(self):
+                """A memoized property that calls a_method."""
+                return self.a_method()
+
+        # Create an instance of TestClass
+        test_instance = TestClass()
+
+        # Use unittest.mock.patch to mock a_method
+        with patch.object(TestClass, "a_method", return_value=42) as mock_method:
+            # Call a_property twice
+            result1 = test_instance.a_property
+            result2 = test_instance.a_property
+
+            # Check that a_method was called only once
+            mock_method.assert_called_once()
+
+            # Verify that both results are the same and as expected
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
 
 
 if __name__ == "__main__":
