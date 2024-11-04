@@ -23,7 +23,21 @@ class TestAccessNestedMap(unittest.TestCase):
 
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),  # Case 1: Simple dictionary with one key-value pair
-        ({"a": {"b": 2}}, ("a",), {"b": 2}),  # Case 2: Nested dictionary, access top-level key
+        ({"a": {"b": 2}}, ("a",), {"b": 2}),  # Case 2: Nested dictionary, access top-level keyclass TestAccessNestedMap(unittest.TestCase):
+    """Test cases for access_nested_map function"""
+
+    @parameterized.expand([
+        ({}, ("a",)),                     # Test case 1: Empty dictionary and non-existent key
+        ({"a": 1}, ("a", "b")),           # Test case 2: Dictionary with a key that doesn't have a nested key
+    ])
+    def test_access_nested_map_exception(self, nested_map, path):
+        """Test that access_nested_map raises KeyError for invalid paths."""
+        with self.assertRaises(KeyError) as context:
+            access_nested_map(nested_map, path)
+        
+        # Check that the exception message matches the expected key
+        self.assertEqual(str(context.exception), repr(path[-1]))
+
         ({"a": {"b": 2}}, ("a", "b"), 2)  # Case 3: Nested dictionary, full path to value
     ])
     def test_access_nested_map(
